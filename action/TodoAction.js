@@ -18,6 +18,7 @@ window.App.TodoAction = {
 	// action creater:
 	// 	1. defined action object
 	// 	2. pass action object to dispatcher
+
 	createTodo(title) {
 		AppDispatcher.dispatch({
 			type: ActionTypes.CREATE_TODO,
