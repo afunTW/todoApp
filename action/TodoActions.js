@@ -13,7 +13,7 @@ window.App.TodoActions = {
 				type: ActionTypes.LOAD_TODOS_SUCCESS,
 				todo
 			}))
-	}
+	},
 
 	// action creater:
 	// 	1. defined action object
@@ -24,7 +24,7 @@ window.App.TodoActions = {
 			type: ActionTypes.CREATE_TODO,
 			title
 		})
-	}
+	},
 
 	updateTodo(id, title) {
 		AppDispatcher.dispatch({
@@ -32,7 +32,7 @@ window.App.TodoActions = {
 			id,
 			title
 		})
-	}
+	},
 
 	toggleTodo(id, completed) {
 		AppDispatcher.dispatch({
@@ -40,7 +40,7 @@ window.App.TodoActions = {
 			id,
 			completed
 		})
-	}
+	},
 
 	deleteTodo(id) {
 		AppDispatcher.dispatch({

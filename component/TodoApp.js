@@ -25,11 +25,6 @@ class TodoApp extends React.Component {
 
 		// load json file from todos.json
 		TodoActions.loadTodos()
-
-		// register to TodoStore: sync state and TodoStore when trigger
-		this._removeChangeListener = TodoStore.addChangeListener(
-			() => this.setState({todos: TodoStore.getAll()})
-		)
 	}
 
 	updateTodoBy(updatefn) {
@@ -45,19 +40,9 @@ class TodoApp extends React.Component {
 		const { todos } = this.state
 		return (
 			<div>
-				<TodoHeader
-					todoCount={todos.filter((todo) => !todo.completed).length}
-				/>
-				<InputField
-					placeholder="add new item"
-					onSubmitEditing={TodoActions.createTodo}
-				/>
-				<TodoList
-					todos={todos}
-					onDeleteTodo={TodoActions.deleteTodo}
-					onToggleTodo={TodoActions.toggleTodo}
-					onUpdateTodo={TodoActions.updateTodo}
-				/>
+				<TodoHeaderContainer/>
+				<CreateTodoFieldContainer />
+				<TodoListContainer />
 			</div>
 		);
 	}
