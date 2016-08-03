@@ -1,49 +1,35 @@
 const {
 	InputField,
 	TodoList,
-	TodoHeader
+	TodoHeader,
+	TodoActions,
+	TodoStore
 } = window.App
-
-const _deleteTodo = (todos, id) => {
-	const idx = todos.findIndex((todo) => todo.id === id)
-	if (idx !== -1) todos.splice(idx, 1)
-	return todos
-}
-
-const _toggleTodo = (todos, id, completed) => {
-	const target = todos.find((todo) => todo.id === id)
-	if (target) target.completed = completed
-	return todos
-}
-
-const _createTodo = (todos, title) => {
-	todos.push({
-		id: todos[todos.length-1].id+1,
-		title: title,
-		completed: false
-	})
-	return todos
-}
-
-const _updateTodo = (todos, id, title) => {
-	const target = todos.find((todo) => todo.id === id)
-	if (target) target.title = title
-	return todos
-}
 
 class TodoApp extends React.Component {
 	constructor(props, context) {
 		super(props, context)
 		this.state = {
-			todos: []
+			todos: TodoStore.getAll()
 		}
 	}
 
 	// lifecycle method
+	componentWillMount() {
+		// register listener to TodoStore
+		this._removeChangeListener()
+	}
+
+	// lifecycle method
 	componentDidMount() {
-		fetch('./todos.json')
-			.then((response) => response.json())
-			.then((todos) => this.setState({todos}))
+
+		// load json file from todos.json
+		TodoActions.loadTodos()
+
+		// register to TodoStore: sync state and TodoStore when trigger
+		this._removeChangeListener = TodoStore.addChangeListener(
+			() => this.setState({todos: TodoStore.getAll()})
+		)
 	}
 
 	updateTodoBy(updatefn) {
@@ -54,6 +40,7 @@ class TodoApp extends React.Component {
 		}
 	}
 
+	// get every render data from TOdoStore
 	render() {
 		const { todos } = this.state
 		return (
@@ -63,13 +50,13 @@ class TodoApp extends React.Component {
 				/>
 				<InputField
 					placeholder="add new item"
-					onSubmitEditing={ this.updateTodoBy(_createTodo) }
+					onSubmitEditing={TodoActions.createTodo}
 				/>
 				<TodoList
 					todos={todos}
-					onDeleteTodo={ this.updateTodoBy(_deleteTodo) }
-					onToggleTodo={ this.updateTodoBy(_toggleTodo) }
-					onUpdateTodo={ this.updateTodoBy(_updateTodo) }
+					onDeleteTodo={TodoActions.deleteTodo}
+					onToggleTodo={TodoActions.toggleTodo}
+					onUpdateTodo={TodoActions.updateTodo}
 				/>
 			</div>
 		);

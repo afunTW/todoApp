@@ -3,7 +3,7 @@ const {
 	AppDispatcher
 } = window.App
 
-window.App.TodoAction = {
+window.App.TodoActions = {
 
 	// async operation
 	loadTodos() {
