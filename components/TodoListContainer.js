@@ -10,20 +10,20 @@ class TodoListContainer extends React.Component {
 		this.state = {todos: TodoStore.getAll()}
 	}
 
-	componentWillMount() {
-		this._removeChangeListener()
-	}
-
 	componentDidMount() {
 		this._removeChangeListener = TodoStore.addChangeListener(
 			() => this.setState({todos: TodoStore.getAll()})
 		)
 	}
 
+	componentWillUnmount() {
+		this._removeChangeListener()
+	}
+
 	render() {
 		return (
 			<TodoList
-				todos={todos}
+				todos={this.state.todos}
 				onDeleteTodo={TodoActions.deleteTodo}
 				onToggleTodo={TodoActions.toggleTodo}
 				onUpdateTodo={TodoActions.updateTodo}

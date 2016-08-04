@@ -9,14 +9,14 @@ class TodoHeaderContainer extends React.Component {
 		this.state = {todos: TodoStore.getAll()}
 	}
 
-	componentWillMount() {
-		this._removeChangeListener()
-	}
-
 	componentDidMount() {
 		this._removeChangeListener = TodoStore.addChangeListener(
 			() => this.setState({todos: TodoStore.getAll()})
 		)
+	}
+
+	componentWillUnmount() {
+		this._removeChangeListener()
 	}
 
 	render() {
@@ -24,7 +24,7 @@ class TodoHeaderContainer extends React.Component {
 			<TodoHeader
 				title="My Todo List"
 				username="afun"
-				todoCount={todos.filter((todo) => !todo.completed).length}
+				todoCount={this.state.todos.filter((todo) => !todo.completed).length}
 			/>
 		)
 	}

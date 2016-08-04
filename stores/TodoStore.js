@@ -1,6 +1,6 @@
 const {
 	ActionTypes,
-	ActionDispatcher
+	AppDispatcher
 } = window.App
 
 const CHANGE_EVENT = 'CHANGE'
@@ -41,15 +41,18 @@ const _deleteTodo = (todos, id) => {
 }
 
 window.App.TodoStore = {
+	getAll() {
+		return _todos
+	},
 
 	// providing change event listener to View
 	addChangeListener(callback) {
 		_emitter.on(CHANGE_EVENT, callback)
 		return () => _emitter.removeListener(CHANGE_EVENT, callback)
-	}
+	},
 
 	// register callback on Dispatcher
-	dispatchToken: AppDispatcher.register((action) =>
+	dispatchToken: AppDispatcher.register((action) => {
 		switch (action.type) {
 			case ActionTypes.LOAD_TODOS_SUCCESS:
 				_todos = action.todos
@@ -59,11 +62,11 @@ window.App.TodoStore = {
 				_todos = _createTodo(_todos, action.title)
 				_emitter.emit(CHANGE_EVENT)
 				break
-			case.ActionTypes.UPDATE_TODO:
+			case ActionTypes.UPDATE_TODO:
 				_todos = _updateTodo(_todos, action.id, action.title)
 				_emitter.emit(CHANGE_EVENT)
 				break
-			case.ActionTypes.TOGGLE_TODO:
+			case ActionTypes.TOGGLE_TODO:
 				_todos = _toggleTodo(_todos, action.id, action.completed)
 				_emitter.emit(CHANGE_EVENT)
 				break
@@ -71,6 +74,6 @@ window.App.TodoStore = {
 				_todos = _deleteTodo(_todos, action.id)
 				_emitter.emit(CHANGE_EVENT)
 				break
-		}
+		}}
 	)
 }

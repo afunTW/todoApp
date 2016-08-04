@@ -7,11 +7,11 @@ window.App.TodoActions = {
 
 	// async operation
 	loadTodos() {
-		fetch('../todos.json')
+		fetch('./todos.json')
 			.then((response) => response.json())
-			.then((todo) => AppDispatcher.dispatch({
+			.then((todos) => AppDispatcher.dispatch({
 				type: ActionTypes.LOAD_TODOS_SUCCESS,
-				todo
+				todos
 			}))
 	},
 
