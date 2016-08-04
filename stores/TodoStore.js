@@ -9,9 +9,8 @@ const _emitter = new EventEmitter()
 
 let _todos = []
 
-/*
-	logical operation
-*/
+
+// logical operation
 
 const _createTodo = (todos, title) => {
 	todos.push({
@@ -40,18 +39,22 @@ const _deleteTodo = (todos, id) => {
 	return todos
 }
 
+// 1. getter API to View
+// 2. register callback on Dispatcher
+// 3. update data should be all through Action and Dispatcher
+
 window.App.TodoStore = {
 	getAll() {
+
+		// [toView] getter API
 		return _todos
 	},
-
-	// providing change event listener to View
 	addChangeListener(callback) {
+
+		// [toView] register listener and return remove API
 		_emitter.on(CHANGE_EVENT, callback)
 		return () => _emitter.removeListener(CHANGE_EVENT, callback)
 	},
-
-	// register callback on Dispatcher
 	dispatchToken: AppDispatcher.register((action) => {
 		switch (action.type) {
 			case ActionTypes.LOAD_TODOS_SUCCESS:
