@@ -1,3 +1,5 @@
+const { Container } = FluxUtils
+
 const {
 	TodoActions,
 	TodoStore,
@@ -5,25 +7,37 @@ const {
 } = window.App
 
 class TodoListContainer extends React.Component {
-	constructor(props, context) {
-		super(props, context)
 
-		// [fromStore] load data from Store
-		this.state = {todos: TodoStore.getAll()}
+	static getStores() {
+		return [TodoStore]
 	}
 
-	componentDidMount() {
-
-		// [fromStore] register listener
-		// [fromStore] get the remove listener funcion (_removeChangeListnere)
-		this._removeChangeListener = TodoStore.addChangeListener(
-			() => this.setState({todos: TodoStore.getAll()})
-		)
+	static calculateState(preState) {
+		return {
+			todos: TodoStore.getState(),
+		}
 	}
 
-	componentWillUnmount() {
-		this._removeChangeListener()
-	}
+	// // Container carry the listener operation
+	// constructor(props, context) {
+	// 	super(props, context)
+
+	// 	// [fromStore] load data from Store
+	// 	this.state = {todos: TodoStore.getAll()}
+	// }
+
+	// componentDidMount() {
+
+	// 	// [fromStore] register listener
+	// 	// [fromStore] get the remove listener funcion (_removeChangeListnere)
+	// 	this._removeChangeListener = TodoStore.addChangeListener(
+	// 		() => this.setState({todos: TodoStore.getAll()})
+	// 	)
+	// }
+
+	// componentWillUnmount() {
+	// 	this._removeChangeListener()
+	// }
 
 	render() {
 		return (
@@ -37,4 +51,5 @@ class TodoListContainer extends React.Component {
 	}
 }
 
-window.App.TodoListContainer = TodoListContainer
+window.App.TodoListContainer = Container.create(TodoListContainer)
+// window.App.TodoListContainer = TodoListContainer

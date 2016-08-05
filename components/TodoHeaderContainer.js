@@ -1,23 +1,40 @@
+const { Container } = FluxUtils
+
 const {
 	TodoStore,
 	TodoHeader
 } = window.App
 
 class TodoHeaderContainer extends React.Component {
-	constructor(props, context) {
-		super(props, context)
-		this.state = {todos: TodoStore.getAll()}
+
+	static getStores() {
+
+		// register the listener and remove function
+		return [TodoStore]
 	}
 
-	componentDidMount() {
-		this._removeChangeListener = TodoStore.addChangeListener(
-			() => this.setState({todos: TodoStore.getAll()})
-		)
+	static calculateState(preState) {
+		return {
+			// FIXME: there's "," behind, why?
+			todos: TodoStore.getState(),
+		}
 	}
 
-	componentWillUnmount() {
-		this._removeChangeListener()
-	}
+
+	// // Container carry the listener operation
+	// constructor(props, context) {
+	// 	super(props, context)
+	// 	this.state = {todos: TodoStore.getAll()}
+	// }
+	// componentDidMount() {
+	// 	this._removeChangeListener = TodoStore.addChangeListener(
+	// 		() => this.setState({todos: TodoStore.getAll()})
+	// 	)
+	// }
+
+	// componentWillUnmount() {
+	// 	this._removeChangeListener()
+	// }
 
 	render() {
 		return (
@@ -30,4 +47,5 @@ class TodoHeaderContainer extends React.Component {
 	}
 }
 
-window.App.TodoHeaderContainer = TodoHeaderContainer
+window.App.TodoHeaderContainer = Container.create(TodoHeaderContainer)
+// window.App.TodoHeaderContainer = TodoHeaderContainer
