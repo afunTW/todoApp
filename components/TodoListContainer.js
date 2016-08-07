@@ -1,55 +1,34 @@
-const { Container } = FluxUtils
+const { connect } = ReactRedux
 
 const {
 	TodoActions,
-	TodoStore,
 	TodoList
 } = window.App
 
 class TodoListContainer extends React.Component {
-
-	static getStores() {
-		return [TodoStore]
-	}
-
-	static calculateState(preState) {
-		return {
-			todos: TodoStore.getState(),
-		}
-	}
-
-	// // Container carry the listener operation
-	// constructor(props, context) {
-	// 	super(props, context)
-
-	// 	// [fromStore] load data from Store
-	// 	this.state = {todos: TodoStore.getAll()}
-	// }
-
-	// componentDidMount() {
-
-	// 	// [fromStore] register listener
-	// 	// [fromStore] get the remove listener funcion (_removeChangeListnere)
-	// 	this._removeChangeListener = TodoStore.addChangeListener(
-	// 		() => this.setState({todos: TodoStore.getAll()})
-	// 	)
-	// }
-
-	// componentWillUnmount() {
-	// 	this._removeChangeListener()
-	// }
-
 	render() {
+		const {
+			todos,
+			updateTodo,
+			toggleTodo,
+			deleteTodo
+		} = this.props
 		return (
 			<TodoList
-				todos={this.state.todos}
-				onDeleteTodo={TodoActions.deleteTodo}
-				onToggleTodo={TodoActions.toggleTodo}
-				onUpdateTodo={TodoActions.updateTodo}
+				todos={todos}
+				onUpdateTodo={updateTodo}
+				onToggleTodo={toggleTodo}
+				onDeleteTodo={deleteTodo}
 			/>
 		)
 	}
 }
 
-window.App.TodoListContainer = Container.create(TodoListContainer)
-// window.App.TodoListContainer = TodoListContainer
+window.App.TodoListContainer = connect(
+	(state) => ({todos: state.todos}),
+	{
+		updateTodo: TodoActions.updateTodo,
+		toggleTodo: TodoActions.toggleTodo,
+		deleteTodo: TodoActions.deleteTodo
+	}
+)(TodoListContainer)

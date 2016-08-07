@@ -5,13 +5,13 @@ const {
 	TodoListContainer
 } = window.App
 
+const { connect } = ReactRedux
+
 class TodoApp extends React.Component {
 
 	// lifecycle method
 	componentDidMount() {
-
-		// load json file from todos.json
-		TodoActions.loadTodos()
+		this.props.loadTodos()
 	}
 
 	// get every render data from TOdoStore
@@ -26,4 +26,6 @@ class TodoApp extends React.Component {
 	}
 }
 
-window.App.TodoApp = TodoApp
+window.App.TodoApp = connect(undefined, {
+	loadTodos: TodoActions.loadTodos
+})(TodoApp)

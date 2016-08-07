@@ -3,15 +3,21 @@ const {
 	InputField
 } = window.App
 
+const { connect } = ReactRedux
+
 class CreateTodoFieldContainer extends React.Component {
 	render() {
 		return (
 			<InputField
 				placeholder="add new item"
-				onSubmitEditing={TodoActions.createTodo}
+				// invoke parent's createTodo
+				onSubmitEditing={this.props.createTodo}
 			/>
 		)
 	}
 }
 
-window.App.CreateTodoFieldContainer = CreateTodoFieldContainer
+// [API] connect(mapStateToProps, mapDispatchToProps)()
+window.App.CreateTodoFieldContainer = connect(undefined, {
+	createTodo: TodoActions.createTodo
+})(CreateTodoFieldContainer)
