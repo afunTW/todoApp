@@ -5,13 +5,6 @@ const {
 	AppDispatcher,
 } = window.App
 
-const CHANGE_EVENT = 'CHANGE'
-
-const _emitter = new EventEmitter()
-
-let _todos = []
-
-
 // logical operation
 
 const _createTodo = (todos, title) => {
@@ -25,14 +18,6 @@ const _createTodo = (todos, title) => {
 			completed: false
 		}
 	]
-
-	// todos.push({
-	// 	id: todos[todos.length-1].id+1,
-	// 	title: title,
-	// 	completed: false
-	// })
-	// return todos
-
 }
 
 const _updateTodo = (todos, id, title) => {
@@ -47,10 +32,6 @@ const _updateTodo = (todos, id, title) => {
 		title
 	}
 	return newTodos
-
-	// const target = todos.find((todo) => todo.id === id)
-	// if (target) target.title = title
-	// return todos
 }
 
 const _toggleTodo = (todos, id, completed) => {
@@ -62,11 +43,6 @@ const _toggleTodo = (todos, id, completed) => {
 	const newTodos = [...todos]
 	newTodos[idx].completed = completed
 	return newTodos
-
-
-	// const target = todos.find((todo) => todo.id === id)
-	// if (target) target.completed = completed
-	// return todos
 }
 
 const _deleteTodo = (todos, id) => {
@@ -78,10 +54,6 @@ const _deleteTodo = (todos, id) => {
 	const newTodos = [...todos]
 	newTodos.splice(idx, 1)
 	return newTodos
-
-	// const idx = todos.findIndex((todo) => todo.id === id)
-	// if (idx !== -1) todos.splice(idx, 1)
-	// return todos
 }
 
 // focus on update state
@@ -109,41 +81,3 @@ class TodoStore extends ReduceStore {
 }
 
 window.App.TodoStore = new TodoStore(AppDispatcher)
-
-// window.App.TodoStore = {
-// 	getAll() {
-
-// 		// [toView] getter API
-// 		return _todos
-// 	},
-// 	addChangeListener(callback) {
-
-// 		// [toView] register listener and return remove API
-// 		_emitter.on(CHANGE_EVENT, callback)
-// 		return () => _emitter.removeListener(CHANGE_EVENT, callback)
-// 	},
-// 	dispatchToken: AppDispatcher.register((action) => {
-// 		switch (action.type) {
-// 			case ActionTypes.LOAD_TODOS_SUCCESS:
-// 				_todos = action.todos
-// 				_emitter.emit(CHANGE_EVENT)
-// 				break
-// 			case ActionTypes.CREATE_TODO:
-// 				_todos = _createTodo(_todos, action.title)
-// 				_emitter.emit(CHANGE_EVENT)
-// 				break
-// 			case ActionTypes.UPDATE_TODO:
-// 				_todos = _updateTodo(_todos, action.id, action.title)
-// 				_emitter.emit(CHANGE_EVENT)
-// 				break
-// 			case ActionTypes.TOGGLE_TODO:
-// 				_todos = _toggleTodo(_todos, action.id, action.completed)
-// 				_emitter.emit(CHANGE_EVENT)
-// 				break
-// 			case ActionTypes.DELETE_TODO:
-// 				_todos = _deleteTodo(_todos, action.id)
-// 				_emitter.emit(CHANGE_EVENT)
-// 				break
-// 		}}
-// 	)
-// }

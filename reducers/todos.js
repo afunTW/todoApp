@@ -1,3 +1,5 @@
+const { ActionTypes } = window.App
+
 const _createTodo = (todos, title) => {
 
 	// immutable
