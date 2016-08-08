@@ -1,55 +1,37 @@
 const { ActionTypes } = window.App
 
+const { List, Record } = Immutable
+
+const TodoRecord = Record({
+	id: undefined,
+	title: undefined,
+	completed: false
+})
+
+const _findIdxById = (todos, id) => todos.findIndex((todo) => todo.id === id)
+
+// refactor by Immutable List push()
 const _createTodo = (todos, title) => {
-
-	// immutable
-	return [
-		...todos,
-		{
-			id: todos[todos.length-1].id+1,
-			title: title,
-			completed: false
-		}
-	]
+	todos.push(new TodoRecord({
+		id: todos.last().id+1,
+		title,
+		completed: false
+	}))
 }
 
-const _updateTodo = (todos, id, title) => {
+// refactor by Immutable List setIn()
+const _updateTodo = (todos, id, title) =>
+	todos.setIn([_findIdxById(todos, id), 'title'], title)
 
-	// immutable
-	const idx = todos.findInddex((todo) => todo.id === id)
-	if (idx === -1) return todos
+// refactor by Immutable List setIn()
+const _toggleTodo = (todos, id, completed) =>
+	todos.setIn([_findIdxById(todos, id), 'completed'], completed)
 
-	const newTodos = [...todos]
-	newTodos[idx] = {
-		...todos[idx],
-		title
-	}
-	return newTodos
-}
+// refactor by Immutable List delete()
+const _deleteTodo = (todos, id) =>
+	todos.delete(_findIdxById(todos, id))
 
-const _toggleTodo = (todos, id, completed) => {
-
-	// immutable
-	const idx = todos.findInddex((todo) => todo.id === id)
-	if (idx === -1) return todos
-
-	const newTodos = [...todos]
-	newTodos[idx].completed = completed
-	return newTodos
-}
-
-const _deleteTodo = (todos, id) => {
-
-	// immutable
-	const idx = todos.findInddex((todo) => todo.id === id)
-	if (idx === -1) return todos
-
-	const newTodos = [...todos]
-	newTodos.splice(idx, 1)
-	return newTodos
-}
-
-window.App.reducers.todos = (state = [], action) => {
+window.App.reducers.todos = (state = new List(), action) => {
 	switch (action.type) {
 		case ActionTypes.LOAD_TODOS_SUCCESS:
 			return action.todos
